@@ -31,7 +31,8 @@ namespace labanov1
             MainCalendar.SelectedDate = DateTime.Now;
             MainCalendar.DisplayDate = DateTime.Now;
 
-           
+            StatsListView.Items.Add(new { Date = "01.10.2023", Completed = "5 🌟", Missed = "1 💧" });
+            StatsListView.Items.Add(new { Date = "02.10.2023", Completed = "4 🌟", Missed = "2 💧" });
         }
 
         private void BtnSaveProfile_Click(object sender, RoutedEventArgs e)
@@ -130,7 +131,17 @@ namespace labanov1
             }
         }
 
-      
+        private void RepeatBtnMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(TxtScore.Text, out int score))
+                TxtScore.Text = (score - 1).ToString();
+        }
+
+        private void RepeatBtnPlus_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(TxtScore.Text, out int score))
+                TxtScore.Text = (score + 1).ToString();
+        }
 
         private void MenuDarkTheme_Click(object sender, RoutedEventArgs e)
         {
