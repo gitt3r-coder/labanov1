@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace labanov1
 {
     /// <summary>
-    /// Класс для хранения данных профиля пользователя
+    /// Класс для хранения данных профиля пользователя zzzzz
     /// </summary>
     public class UserProfile
     {
