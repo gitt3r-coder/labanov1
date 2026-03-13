@@ -1,12 +1,161 @@
 ﻿<Window x:Class="labanov1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:labanov1"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Hello Kitty: Управление привычками 🎀" Height="650" Width="900"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Comic Sans MS">
 
-    </Grid>
+    <Window.Resources>
+        <SolidColorBrush x:Key="KittyBackground" Color="#FFF0F5"/>
+        <SolidColorBrush x:Key="KittyAccent" Color="#FF69B4"/>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#FFB6C1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="#FF69B4"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF69B4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="#FFE4E1"/>
+            <Setter Property="Foreground" Value="#C71585"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="#FF69B4"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FF1493"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True" x:Name="RootPanel" Background="{StaticResource KittyBackground}">
+
+        <Menu DockPanel.Dock="Top" Height="25" Background="#FFC0CB">
+            <MenuItem Header="Файл 🎀">
+                <MenuItem Header="Сохранить" Click="MenuSave_Click"/>
+                <MenuItem Header="Загрузить"/>
+                <Separator/>
+                <MenuItem Header="Выход" Click="MenuExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Правка 🌸">
+                <MenuItem Header="Копировать"/>
+                <MenuItem Header="Вставить"/>
+            </MenuItem>
+            <MenuItem Header="Вид ✨">
+                <MenuItem Header="Обычная тема" Click="MenuDarkTheme_Click"/>
+                <MenuItem Header="Kitty тема" Click="MenuLightTheme_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <ToolBar DockPanel.Dock="Top" Height="30" Background="#FFE4E1">
+            <Button Content="💾 Сохранить милашку" Click="BtnSaveProfile_Click" Background="Transparent" BorderThickness="0" Foreground="#C71585"/>
+            <Separator/>
+            <ToggleButton x:Name="ToggleEditMode" Content="Режим редактирования ✏️" Checked="ToggleEditMode_Changed" Unchecked="ToggleEditMode_Changed" Foreground="#C71585"/>
+        </ToolBar>
+
+        <StatusBar DockPanel.Dock="Bottom" Height="25" Background="#FFC0CB">
+            <TextBlock x:Name="StatusText" Text="Мур-мур, готово! 🐾" Foreground="#C71585" FontWeight="Bold"/>
+        </StatusBar>
+
+        <TabControl x:Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged" Margin="5" Background="White">
+
+            <TabItem Header="Моя анкета 🎀">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <GroupBox Header="Кто ты, котенок?">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Content="Имя:" Grid.Row="0" Grid.Column="0" Foreground="#C71585"/>
+                                <TextBox x:Name="TxtName" Grid.Row="0" Grid.Column="1" Margin="5" BorderBrush="#FFB6C1"/>
+
+                                <Label Content="Фамилия:" Grid.Row="1" Grid.Column="0" Foreground="#C71585"/>
+                                <TextBox x:Name="TxtSurname" Grid.Row="1" Grid.Column="1" Margin="5" BorderBrush="#FFB6C1"/>
+
+                                <Label Content="День рождения:" Grid.Row="2" Grid.Column="0" Foreground="#C71585"/>
+                                <DatePicker x:Name="DpBirthDate" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+                                <Label Content="Где учишься:" Grid.Row="3" Grid.Column="0" Foreground="#C71585"/>
+                                <ComboBox x:Name="CmbEducation" Grid.Row="3" Grid.Column="1" Margin="5" BorderBrush="#FFB6C1">
+                                    <ComboBoxItem Content="Школа магии"/>
+                                    <ComboBoxItem Content="Колледж искусств"/>
+                                    <ComboBoxItem Content="Университет"/>
+                                    <ComboBoxItem Content="Академия милашек"/>
+                                </ComboBox>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Секретики">
+                            <WrapPanel>
+                                <StackPanel Margin="10">
+                                    <Label Content="Что любишь делать:" Foreground="#C71585"/>
+                                    <ListBox x:Name="ListHobbies" SelectionMode="Multiple" Height="80" Width="150" BorderBrush="#FFB6C1">
+                                        <ListBoxItem Content="Кушать яблочки 🍎"/>
+                                        <ListBoxItem Content="Спать 💤"/>
+                                        <ListBoxItem Content="Заводить друзей 👯‍♀️"/>
+                                        <ListBoxItem Content="Печь печенье 🍪"/>
+                                    </ListBox>
+                                </StackPanel>
+                                <StackPanel Margin="10">
+                                    <Label Content="Тайный пароль:" Foreground="#C71585"/>
+                                    <PasswordBox x:Name="PbPassword" Width="150" Margin="0,0,0,10" BorderBrush="#FFB6C1"/>
+                                    <Label Content="Уровень энергии:" Foreground="#C71585"/>
+                                    <RadioButton x:Name="RbActivityLow" Content="Сплю весь день" GroupName="Activity"/>
+                                    <RadioButton x:Name="RbActivityMedium" Content="Играю с бантиком" GroupName="Activity" IsChecked="True"/>
+                                    <RadioButton x:Name="RbActivityHigh" Content="Бегаю по потолку!" GroupName="Activity"/>
+                                </StackPanel>
+                            </WrapPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Настройки">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox x:Name="ChkNotifications" Content="Письма от Kitty 💌" Margin="5"/>
+                                <CheckBox x:Name="ChkPublicStats" Content="Показывать всем" Margin="5"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <Button Content="Сохранить анкету ✨" Click="BtnSaveProfile_Click"/>
+                            <Button Content="Стереть всё ❌" Click="BtnReset_Click" Background="#FFB6C1" BorderBrush="White"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" BorderBrush="#FF69B4" BorderThickness="3" CornerRadius="15" Margin="10" Padding="5" Background="#FFF0F5">
+                        <StackPanel>
+                            <Label Content="Твое фото 📸" HorizontalAlignment="Center" Foreground="#C71585" FontWeight="Bold"/>
+                            <Image x:Name="ImgAvatar" Height="150" Margin="10" Stretch="UniformToFill"/>
+                            <Button Content="Выбрать фотку 🌸" Click="BtnLoadAvatar_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
