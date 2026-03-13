@@ -1,26 +1,37 @@
-﻿using Microsoft.Win32;
+﻿using labanov1;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace labanov1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<Habit> _habits;
+        private UserProfile _currentUserProfile;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _currentUserProfile = new UserProfile();
+            _habits = new ObservableCollection<Habit>
+            {
+                new Habit { Name = "Испечь яблочный пирог", Time = "14:00", IsCompleted = false },
+                new Habit { Name = "Завязать бантик", Time = "08:15", IsCompleted = true }
+            };
+
+            HabitsGrid.ItemsSource = _habits;
+
+            MainCalendar.SelectedDate = DateTime.Now;
+            MainCalendar.DisplayDate = DateTime.Now;
+
+           
         }
 
         private void BtnSaveProfile_Click(object sender, RoutedEventArgs e)
@@ -37,6 +48,15 @@ namespace labanov1
                 return;
             }
 
+            _currentUserProfile.Name = TxtName.Text;
+            _currentUserProfile.Surname = TxtSurname.Text;
+            _currentUserProfile.DateOfBirth = DpBirthDate.SelectedDate ?? DateTime.MinValue;
+            _currentUserProfile.Education = (CmbEducation.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+            string activity = "Играю с бантиком";
+            if (RbActivityLow.IsChecked == true) activity = "Сплю весь день";
+            if (RbActivityHigh.IsChecked == true) activity = "Бегаю по потолку!";
+            _currentUserProfile.ActivityLevel = activity;
 
             MessageBox.Show("Анкета супер-успешно сохранена! Ты умница! 💖", "Ура!", MessageBoxButton.OK, MessageBoxImage.Information);
             StatusText.Text = "Сохранено в " + DateTime.Now.ToShortTimeString() + " 🎀";
@@ -64,6 +84,21 @@ namespace labanov1
                 Uri fileUri = new Uri(openFileDialog.FileName);
                 ImgAvatar.Source = new BitmapImage(fileUri);
                 StatusText.Text = "Красивое фото добавлено! 🌸";
+            }
+        }
+
+        private void BtnAddHabit_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TxtNewHabit.Text))
+            {
+                _habits.Add(new Habit
+                {
+                    Name = TxtNewHabit.Text,
+                    Time = TxtHabitTime.Text,
+                    IsCompleted = false
+                });
+                TxtNewHabit.Clear();
+                StatusText.Text = "Новое дело добавлено! ✨";
             }
         }
 
@@ -95,7 +130,8 @@ namespace labanov1
             }
         }
 
-       
+      
+
         private void MenuDarkTheme_Click(object sender, RoutedEventArgs e)
         {
             RootPanel.Background = new SolidColorBrush(Color.FromRgb(240, 240, 240));

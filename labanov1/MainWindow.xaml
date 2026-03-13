@@ -156,6 +156,55 @@
                     </Border>
                 </Grid>
             </TabItem>
+
+            <TabItem Header="Полезные дела 🍓">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <Label Content="Новое хорошее дело:" Foreground="#C71585" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBox x:Name="TxtNewHabit" Width="200" Margin="0,0,10,0" BorderBrush="#FFB6C1"/>
+                            <TextBox x:Name="TxtHabitTime" Width="80" Margin="0,0,10,0" Text="12:00"/>
+                            <Button Content="Добавить 💖" Click="BtnAddHabit_Click"/>
+                        </StackPanel>
+
+                        <DataGrid x:Name="HabitsGrid" AutoGenerateColumns="False" Height="150" Margin="0,0,0,10" CanUserAddRows="False" Background="#FFF0F5" RowBackground="White" AlternatingRowBackground="#FFE4E1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Дело" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Время" Binding="{Binding Time}" Width="100"/>
+                                <DataGridCheckBoxColumn Header="Сделано!" Binding="{Binding IsCompleted, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Label Content="Уровень милоты (0-100%):" Foreground="#C71585"/>
+                        <Slider x:Name="SliderProductivity" Minimum="0" Maximum="100" Value="80" Margin="0,0,0,10" Foreground="#FF69B4"/>
+
+                        <Label Content="Настроение (0-100%):" Foreground="#C71585"/>
+                        <Slider x:Name="SliderSatisfaction" Minimum="0" Maximum="100" Value="100" Margin="0,0,0,10" Foreground="#FF69B4"/>
+
+                        <Label Content="Шкала счастья:" Foreground="#C71585"/>
+                        <ProgressBar x:Name="PbDayProgress" Minimum="0" Maximum="100" Height="20" Value="{Binding ElementName=SliderProductivity, Path=Value}" Foreground="#FF69B4" Background="#FFE4E1"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <Label Content="Календарик 📅:" Foreground="#C71585"/>
+                        <Calendar x:Name="MainCalendar" Margin="0,0,0,10" Background="#FFF0F5"/>
+
+                        <Label Content="Дневничок 📓:" Foreground="#C71585"/>
+                        <RichTextBox Height="100" BorderBrush="#FFB6C1">
+                            <FlowDocument>
+                                <Paragraph>
+                                    <Run Text="Дорогой дневник, сегодня я..."/>
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
